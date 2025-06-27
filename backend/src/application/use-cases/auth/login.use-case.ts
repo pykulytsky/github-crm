@@ -1,22 +1,22 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { IUserRepository } from 'src/domain/repositories/user.repository';
+import { Injectable } from '@nestjs/common';
 import { verifyPassword } from './utils';
+import { GetUserUseCase } from '../user/get-user.use-case';
+import { GenerateTokenUseCase } from './generate-token.use-case';
 
 @Injectable()
 export class LoginUseCase {
   constructor(
-    @Inject('IUserRepository') private readonly repo: IUserRepository,
+    private readonly getUserUseCase: GetUserUseCase,
+    private readonly generateTokenUseCase: GenerateTokenUseCase,
   ) {}
-  async execute(email: string, password: string) {
-    const user = await this.repo.findByEmail(email);
 
-    if (!user)
-      throw new NotFoundException('Could not find user with given email');
+  async execute(email: string, password: string) {
+    const user = await this.getUserUseCase.executeByEmail(email);
 
     const valid = await verifyPassword(password, user.password);
 
     if (!valid) throw new Error('Invalid password');
 
-    // TODO: generate tokens
+    return await this.generateTokenUseCase.execute(user);
   }
 }

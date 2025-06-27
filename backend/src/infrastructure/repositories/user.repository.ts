@@ -8,12 +8,20 @@ import { User } from 'src/domain/entities/user.entity';
 import { User as PrismaUser } from '@prisma/client';
 
 @Injectable()
-export class UserRepository implements IUserRepository {
+export class PrismaUserRepository implements IUserRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async findByEmail(email: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
       where: { email },
+    });
+
+    return user ? this.toDomainModel(user) : null;
+  }
+
+  async findById(id: string): Promise<User | null> {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
     });
 
     return user ? this.toDomainModel(user) : null;

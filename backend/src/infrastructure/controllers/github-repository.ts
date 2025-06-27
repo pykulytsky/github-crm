@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Request,
   Version,
 } from '@nestjs/common';
 import { AddRepositoryDto, RepositoryDto } from '../dtos/repository.dto';
@@ -25,19 +26,20 @@ export class GithubRepositoryController {
 
   @Version('1')
   @Get('')
-  async fetchUserRepositories(): Promise<Array<RepositoryDto>> {
-    const userId = ''; // TODO: get it from request once auth is done
-
-    return await this.fetchRepositoriesUseCase.executeForUser(userId);
+  async fetchUserRepositories(
+    @Request() req: any,
+  ): Promise<Array<RepositoryDto>> {
+    return await this.fetchRepositoriesUseCase.executeForUser(req.user.sub);
   }
 
   @Version('1')
   @Post('')
-  async addRepository(@Body() input: AddRepositoryDto): Promise<RepositoryDto> {
-    const userId = ''; // TODO: get it from request once auth is done
-
+  async addRepository(
+    @Request() req: any,
+    @Body() input: AddRepositoryDto,
+  ): Promise<RepositoryDto> {
     return await this.addRepositoryUseCase.execute(
-      userId,
+      req.user.sub,
       input.owner,
       input.name,
     );
@@ -45,15 +47,19 @@ export class GithubRepositoryController {
 
   @Version('1')
   @Patch(':id')
-  async updateRepository(@Param('id') id: string): Promise<RepositoryDto> {
-    const userId = ''; // TODO: get it from request once auth is done
-    return await this.updateRepositoryUseCase.execute(id, userId);
+  async updateRepository(
+    @Request() req: any,
+    @Param('id') id: string,
+  ): Promise<RepositoryDto> {
+    return await this.updateRepositoryUseCase.execute(id, req.user.sub);
   }
 
   @Version('1')
   @Delete(':id')
-  async deleteRepository(@Param('id') id: string): Promise<RepositoryDto> {
-    const userId = ''; // TODO: get it from request once auth is done
-    return await this.deleteRepositoryUseCase.execute(id, userId);
+  async deleteRepository(
+    @Request() req: any,
+    @Param('id') id: string,
+  ): Promise<RepositoryDto> {
+    return await this.deleteRepositoryUseCase.execute(id, req.user.sub);
   }
 }
