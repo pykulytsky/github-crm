@@ -17,7 +17,9 @@ export class UpdateRepositoryUseCase {
     const existingRepository = await this.repo.findById(id);
 
     if (!existingRepository)
-      throw new NotFoundException('Could not find repository with given id');
+      throw new NotFoundException(
+        'Could not find repository with given repository id and userId',
+      );
 
     const fetchedRepository = await this.service.fetchRepository(
       existingRepository.owner,

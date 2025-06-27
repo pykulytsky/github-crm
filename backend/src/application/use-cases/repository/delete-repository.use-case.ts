@@ -13,7 +13,9 @@ export class DeleteRepositoryUseCase {
     const repository = await this.repo.delete(id, userId);
 
     if (!repository)
-      throw new NotFoundException('Could not delete repository with given id');
+      throw new NotFoundException(
+        'Could not delete repository with given repository id and userId',
+      );
 
     return repository;
   }
