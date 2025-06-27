@@ -1,0 +1,49 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:15
+    container_name: github-crm-postgres-db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: github-crm
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - local_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d github-crm"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  backend:
+    build: backend
+    container_name: github-crm-backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://admin:admin@postgres:5432/github-crm
+    ports:
+      - "3000:3000"
+    networks:
+      - local_network
+    command: ["node", "dist/main.js"]
+  frontend:
+    build: frontend
+    container_name: github-crm-frontend
+    ports:
+      - "5173:5173"
+    networks:
+      - local_network
+    command: npm run dev -- --host
+
+networks:
+  local_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
