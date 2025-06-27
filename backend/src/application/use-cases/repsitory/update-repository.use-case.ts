@@ -13,7 +13,7 @@ export class UpdateRepositoryUseCase {
     private readonly service: IRepositoryHostingService,
   ) {}
 
-  async execute(id: string): Promise<Repository> {
+  async execute(id: string, userId: string): Promise<Repository> {
     const existingRepository = await this.repo.findById(id);
 
     if (!existingRepository)
@@ -24,6 +24,10 @@ export class UpdateRepositoryUseCase {
       existingRepository.name,
     ); // TODO: error handling
 
-    return await this.repo.update(existingRepository.id, fetchedRepository);
+    return await this.repo.update(
+      existingRepository.id,
+      userId,
+      fetchedRepository,
+    );
   }
 }

@@ -9,8 +9,8 @@ export class DeleteRepositoryUseCase {
     private readonly repo: IRepositoryRepository,
   ) {}
 
-  async execute(id: string): Promise<Repository> {
-    const repository = await this.repo.delete(id);
+  async execute(id: string, userId: string): Promise<Repository> {
+    const repository = await this.repo.delete(id, userId);
 
     if (!repository)
       throw new NotFoundException('Could not delete repository with given id');

@@ -19,6 +19,10 @@ export interface IRepositoryRepository {
   findByUserId(userId: string): Promise<Array<Repository>>;
   findById(id: string): Promise<Repository | null>;
   create(input: CreateRepositoryInput): Promise<Repository>;
-  update(id: string, input: UpdateRepositoryInput): Promise<Repository | null>;
-  delete(id: string): Promise<Repository | null>;
+  update(
+    id: string,
+    userId: string,
+    input: UpdateRepositoryInput,
+  ): Promise<Repository | null>;
+  delete(id: string, userId: string): Promise<Repository | null>;
 }
