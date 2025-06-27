@@ -6,3 +6,32 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id       String @id @default(uuid())
+  email    String @unique
+  password String
+
+  repositories Repository[]
+
+  @@map("users")
+}
+
+model Repository {
+  id        String
+  name      String
+  owner     String
+  url       String
+  stars     Int
+  forks     Int
+  issues    Int
+  createdAt DateTime @map("created_at")
+  addedAt   DateTime @default(now()) @map("added_at")
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@unique([id, userId])
+  @@index([userId])
+  @@map("repositories")
+}

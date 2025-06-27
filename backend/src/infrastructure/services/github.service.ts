@@ -41,6 +41,8 @@ export class GithubService implements IRepositoryHostingService {
         data.forks_count,
         data.open_issues_count,
         new Date(data.created_at),
+        null,
+        null,
       );
       return repository;
     } catch (e) {
