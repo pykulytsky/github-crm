@@ -8,5 +8,6 @@ export class Repository {
     public forks: number,
     public issues: number,
     public createdAt: Date,
+    public userId: string | null = null,
   ) {}
 }
