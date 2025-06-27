@@ -21,7 +21,9 @@ export class AddRepositoryUseCase {
     const fetchedRepository = await this.service.fetchRepository(
       repoOwner,
       repoName,
-    ); // TODO: error handling
+    );
+
+    if (!fetchedRepository) throw new Error('Could not fetch repository'); // TODO: improve error handling
 
     const newRepositoryInput = { ...fetchedRepository, userId };
     return await this.repo.create(newRepositoryInput);
