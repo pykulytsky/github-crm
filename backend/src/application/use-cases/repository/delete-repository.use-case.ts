@@ -9,7 +9,7 @@ export class DeleteRepositoryUseCase {
     private readonly repo: IRepositoryRepository,
   ) {}
 
-  async execute(id: string, userId: string): Promise<Repository> {
+  async execute(id: number, userId: string): Promise<Repository> {
     const repository = await this.repo.delete(id, userId);
 
     if (!repository)

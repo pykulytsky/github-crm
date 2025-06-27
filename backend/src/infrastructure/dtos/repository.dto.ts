@@ -9,8 +9,8 @@ export class AddRepositoryDto {
 }
 
 export class RepositoryDto extends AddRepositoryDto {
-  @IsString()
-  id: string;
+  @IsNumber()
+  id: number;
 
   @IsUrl()
   url: string;

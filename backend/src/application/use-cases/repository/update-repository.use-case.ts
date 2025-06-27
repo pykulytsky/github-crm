@@ -13,7 +13,7 @@ export class UpdateRepositoryUseCase {
     private readonly service: IRepositoryHostingService,
   ) {}
 
-  async execute(id: string, userId: string): Promise<Repository> {
+  async execute(id: number, userId: string): Promise<Repository> {
     const existingRepository = await this.repo.findById(id);
 
     if (!existingRepository)

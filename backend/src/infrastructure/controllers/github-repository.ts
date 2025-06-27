@@ -51,7 +51,7 @@ export class GithubRepositoryController {
     @Request() req: any,
     @Param('id') id: string,
   ): Promise<RepositoryDto> {
-    return await this.updateRepositoryUseCase.execute(id, req.user.sub);
+    return await this.updateRepositoryUseCase.execute(Number(id), req.user.sub);
   }
 
   @Version('1')
@@ -60,6 +60,6 @@ export class GithubRepositoryController {
     @Request() req: any,
     @Param('id') id: string,
   ): Promise<RepositoryDto> {
-    return await this.deleteRepositoryUseCase.execute(id, req.user.sub);
+    return await this.deleteRepositoryUseCase.execute(Number(id), req.user.sub);
   }
 }

@@ -20,7 +20,7 @@ export class PrismaRepositoryRepository implements IRepositoryRepository {
     return repositories.map((repository) => this.toDomainModel(repository));
   }
 
-  async findById(id: string): Promise<Repository | null> {
+  async findById(id: number): Promise<Repository | null> {
     const repository = await this.prisma.repository.findFirst({
       where: { id },
     });
@@ -47,7 +47,7 @@ export class PrismaRepositoryRepository implements IRepositoryRepository {
   }
 
   async update(
-    id: string,
+    id: number,
     userId: string,
     input: UpdateRepositoryInput,
   ): Promise<Repository | null> {
@@ -72,7 +72,7 @@ export class PrismaRepositoryRepository implements IRepositoryRepository {
     }
   }
 
-  async delete(id: string, userId: string): Promise<Repository | null> {
+  async delete(id: number, userId: string): Promise<Repository | null> {
     const repository = await this.prisma.repository.delete({
       where: { id_userId: { id, userId } },
     });

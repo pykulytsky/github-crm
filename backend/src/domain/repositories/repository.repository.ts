@@ -1,7 +1,7 @@
 import { Repository } from '../entities/repository.entity';
 
 export interface CreateRepositoryInput {
-  id: string;
+  id: number;
   name: string;
   owner: string;
   url: string;
@@ -17,12 +17,12 @@ export interface UpdateRepositoryInput
 
 export interface IRepositoryRepository {
   findByUserId(userId: string): Promise<Array<Repository>>;
-  findById(id: string): Promise<Repository | null>;
+  findById(id: number): Promise<Repository | null>;
   create(input: CreateRepositoryInput): Promise<Repository>;
   update(
-    id: string,
+    id: number,
     userId: string,
     input: UpdateRepositoryInput,
   ): Promise<Repository | null>;
-  delete(id: string, userId: string): Promise<Repository | null>;
+  delete(id: number, userId: string): Promise<Repository | null>;
 }

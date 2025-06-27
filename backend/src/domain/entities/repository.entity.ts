@@ -1,6 +1,6 @@
 export class Repository {
   constructor(
-    public readonly id: string,
+    public readonly id: number,
     public name: string,
     public owner: string,
     public url: string,
