@@ -1,5 +1,24 @@
 import { Repository } from '../entities/repository.entity';
 
+export interface CreateRepositoryInput {
+  id: string;
+  name: string;
+  owner: string;
+  url: string;
+  stars: number;
+  forks: number;
+  issues: number;
+  createdAt: Date;
+  userId: string;
+}
+
+export interface UpdateRepositoryInput
+  extends Partial<Omit<CreateRepositoryInput, 'userId'>> {}
+
 export interface IRepositoryRepository {
   findByUserId(userId: string): Promise<Array<Repository>>;
+  findById(id: string): Promise<Repository | null>;
+  create(input: CreateRepositoryInput): Promise<Repository>;
+  update(id: string, input: UpdateRepositoryInput): Promise<Repository | null>;
+  delete(id: string): Promise<Repository | null>;
 }
