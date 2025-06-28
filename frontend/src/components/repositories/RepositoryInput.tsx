@@ -58,13 +58,11 @@ export default function RepositoryInput({
         value={input}
         placeholder="e.g. facebook/react or https://github.com/facebook/react"
         onChange={handleChange}
-        style={{
-          borderColor: error ? "red" : "#ccc",
-          borderWidth: 1,
-          padding: 4,
-        }}
+        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-black ${
+          error ? "border-red-500" : "border-gray-300"
+        }`}
       />
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );
 }

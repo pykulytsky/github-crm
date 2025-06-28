@@ -76,16 +76,24 @@ export function Repositories({ onLogout }: { onLogout: () => void }) {
   };
 
   return (
-    <>
-      <button
-        onClick={() => {
-          handleLogout();
-        }}
-      >
-        Logout
-      </button>
+    <div className="min-h-screen bg-white text-black px-12">
+      <div className="p-6 px-12 flex justify-between">
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="px-6 py-3 bg-black text-white hover:bg-gray-800 transition-colors rounded-md font-medium"
+        >
+          Add Repository
+        </button>
 
-      <button onClick={() => setIsModalOpen(true)}>Add Repository</button>
+        <button
+          onClick={() => {
+            handleLogout();
+          }}
+          className="px-4 py-2 bg-black text-white hover:bg-gray-800 transition-colors rounded-md cursor-pointer"
+        >
+          Logout
+        </button>
+      </div>
 
       <RepositoryList
         repositories={repositories}
@@ -98,6 +106,6 @@ export function Repositories({ onLogout }: { onLogout: () => void }) {
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleAddRepository}
       />
-    </>
+    </div>
   );
 }

@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import "./styles/styles.css";
 import { Login } from "./pages/Login";
 import { Repositories } from "./pages/Repositories";
 import { Signup } from "./pages/Signup";
@@ -14,65 +15,72 @@ function App() {
       .catch(() => setIsAuthenticated(false));
   }, []);
 
-  if (isAuthenticated === null) return <div>Loading...</div>;
+  if (isAuthenticated === null)
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-black text-lg">Loading...</div>
+      </div>
+    );
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/login"
-          element={
-            isAuthenticated ? (
-              <Navigate to="/repositories" />
-            ) : (
-              <Login
-                onSuccess={() => {
-                  setIsAuthenticated(true);
-                }}
-              />
-            )
-          }
-        />
-        <Route
-          path="/signup"
-          element={
-            isAuthenticated ? (
-              <Navigate to="/repositories" />
-            ) : (
-              <Signup
-                onSuccess={() => {
-                  setIsAuthenticated(true);
-                }}
-              />
-            )
-          }
-        />
-        <Route
-          path="/repositories"
-          element={
-            isAuthenticated ? (
-              <Repositories
-                onLogout={() => {
-                  setIsAuthenticated(false);
-                }}
-              />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
-        <Route
-          path="*"
-          element={
-            isAuthenticated ? (
-              <Navigate to="/repositories" />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+    <div className="min-h-screen bg-white">
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/login"
+            element={
+              isAuthenticated ? (
+                <Navigate to="/repositories" />
+              ) : (
+                <Login
+                  onSuccess={() => {
+                    setIsAuthenticated(true);
+                  }}
+                />
+              )
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              isAuthenticated ? (
+                <Navigate to="/repositories" />
+              ) : (
+                <Signup
+                  onSuccess={() => {
+                    setIsAuthenticated(true);
+                  }}
+                />
+              )
+            }
+          />
+          <Route
+            path="/repositories"
+            element={
+              isAuthenticated ? (
+                <Repositories
+                  onLogout={() => {
+                    setIsAuthenticated(false);
+                  }}
+                />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route
+            path="*"
+            element={
+              isAuthenticated ? (
+                <Navigate to="/repositories" />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
 
