@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router";
 
 export function Login({ onSuccess }: { onSuccess: () => void }) {
   const [email, setEmail] = useState("");
@@ -34,6 +35,7 @@ export function Login({ onSuccess }: { onSuccess: () => void }) {
         type="password"
       />
       <button onClick={login}>Login</button>
+      <Link to="/signup">Signup</Link>
     </div>
   );
 }

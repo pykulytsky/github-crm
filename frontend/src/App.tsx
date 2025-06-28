@@ -38,7 +38,15 @@ function App() {
         <Route
           path="/signup"
           element={
-            isAuthenticated ? <Navigate to="/repositories" /> : <Signup />
+            isAuthenticated ? (
+              <Navigate to="/repositories" />
+            ) : (
+              <Signup
+                onSuccess={() => {
+                  setIsAuthenticated(true);
+                }}
+              />
+            )
           }
         />
         <Route

@@ -53,7 +53,7 @@ export class AuthController {
     @Body() input: SignupDto,
   ) {
     try {
-      const { access_token } = await this.loginUseCase.execute(
+      const { access_token } = await this.signupUseCase.execute(
         input.email,
         input.password,
       );
