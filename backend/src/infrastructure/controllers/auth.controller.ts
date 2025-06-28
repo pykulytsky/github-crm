@@ -72,4 +72,11 @@ export class AuthController {
   async me(@Request() req: any) {
     return await this.getUserUserCase.executeById(req.user.sub);
   }
+
+  @Version('1')
+  @Post('logout')
+  async logout(@Res({ passthrough: true }) response: Response) {
+    response.cookie('access_token', null);
+    return { status: 'success' };
+  }
 }
