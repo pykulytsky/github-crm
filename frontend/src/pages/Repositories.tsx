@@ -82,7 +82,7 @@ export function Repositories() {
       <div className="p-6 px-12 flex justify-between">
         <button
           onClick={() => setIsModalOpen(true)}
-          className="px-6 py-3 bg-black text-white hover:bg-gray-800 transition-colors rounded-md font-medium"
+          className="px-6 py-3 bg-black text-white hover:bg-gray-800 transition-colors rounded-md font-medium cursor-pointer"
         >
           Add Repository
         </button>

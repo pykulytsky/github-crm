@@ -111,7 +111,7 @@ export function Signup() {
             <button
               type="submit"
               disabled={!isFormValid}
-              className="w-full px-4 py-3 bg-black text-white hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors rounded-md font-medium"
+              className="w-full px-4 py-3 bg-black text-white hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors rounded-md font-medium cursor-pointer"
             >
               Sign Up
             </button>

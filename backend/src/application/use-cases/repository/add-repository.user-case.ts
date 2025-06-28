@@ -34,6 +34,10 @@ export class AddRepositoryUseCase {
     if (!fetchedRepository) throw new Error('Could not fetch repository');
 
     const newRepositoryInput = { ...fetchedRepository, userId };
-    return await this.repo.create(newRepositoryInput);
+    try {
+      return await this.repo.create(newRepositoryInput);
+    } catch {
+      throw new Error('Failed to add a repository');
+    }
   }
 }

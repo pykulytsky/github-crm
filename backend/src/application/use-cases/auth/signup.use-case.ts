@@ -13,8 +13,11 @@ export class SignupUseCase {
   async execute(email: string, password: string) {
     const hashedPassword = await hashPassword(password);
 
-    const user = await this.repo.create({ email, password: hashedPassword });
-
-    return await this.generateTokenUseCase.execute(user);
+    try {
+      const user = await this.repo.create({ email, password: hashedPassword });
+      return await this.generateTokenUseCase.execute(user);
+    } catch (e) {
+      throw new Error('Failed to create an account, user already exists');
+    }
   }
 }
