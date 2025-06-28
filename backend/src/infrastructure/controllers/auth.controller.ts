@@ -14,6 +14,7 @@ import { GetUserUseCase } from 'src/application/use-cases/user/get-user.use-case
 import { LoginUseCase } from 'src/application/use-cases/auth/login.use-case';
 import { SignupUseCase } from 'src/application/use-cases/auth/signup.use-case';
 import { Public } from '../auth/types';
+import { UserDto } from '../dtos/user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -75,8 +76,9 @@ export class AuthController {
 
   @Version('1')
   @Get('me')
-  async me(@Request() req: any) {
-    return await this.getUserUserCase.executeById(req.user.sub);
+  async me(@Request() req: any): Promise<UserDto> {
+    const user = await this.getUserUserCase.executeById(req.user.sub);
+    return { id: user.id, email: user.email };
   }
 
   @Version('1')
