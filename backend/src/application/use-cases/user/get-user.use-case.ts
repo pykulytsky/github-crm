@@ -12,7 +12,7 @@ export class GetUserUseCase {
     const user = await this.repo.findByEmail(email);
 
     if (!user)
-      throw new NotFoundException('Could not find use with given email');
+      throw new NotFoundException('Could not find user with given email');
 
     return user;
   }
@@ -20,7 +20,7 @@ export class GetUserUseCase {
   async executeById(id: string): Promise<User> {
     const user = await this.repo.findById(id);
 
-    if (!user) throw new NotFoundException('Could not find use with given id');
+    if (!user) throw new NotFoundException('Could not find user with given id');
 
     return user;
   }

@@ -46,7 +46,7 @@ export class GithubService implements IRepositoryHostingService {
       );
       return repository;
     } catch (e) {
-      console.warn(e);
+      console.warn(`Failed to fetch repository ${owner}/${name}`);
       return null;
     }
   }
