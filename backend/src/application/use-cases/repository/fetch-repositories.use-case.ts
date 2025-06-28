@@ -12,8 +12,6 @@ export class FetchRepositoriesUseCase {
   async executeForUser(userId: string): Promise<Array<Repository>> {
     const repositories = await this.repo.findByUserId(userId);
 
-    // TODO: sorting by most recently added
-
     return repositories;
   }
 }

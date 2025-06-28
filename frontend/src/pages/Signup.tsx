@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { signup } from "../api/auth";
+import { toast } from "react-hot-toast";
 
 export function Signup({ onSuccess }: { onSuccess: () => void }) {
   const [email, setEmail] = useState("");
@@ -23,7 +24,8 @@ export function Signup({ onSuccess }: { onSuccess: () => void }) {
     if (res.ok) {
       onSuccess();
     } else {
-      alert("Login failed");
+      const error = await res.json();
+      toast.error(error.message);
     }
   };
 

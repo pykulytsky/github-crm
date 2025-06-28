@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -38,11 +39,15 @@ export class GithubRepositoryController {
     @Request() req: any,
     @Body() input: AddRepositoryDto,
   ): Promise<RepositoryDto> {
-    return await this.addRepositoryUseCase.execute(
-      req.user.sub,
-      input.owner,
-      input.name,
-    );
+    try {
+      return await this.addRepositoryUseCase.execute(
+        req.user.sub,
+        input.owner,
+        input.name,
+      );
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
   }
 
   @Version('1')
@@ -51,7 +56,14 @@ export class GithubRepositoryController {
     @Request() req: any,
     @Param('id') id: string,
   ): Promise<RepositoryDto> {
-    return await this.updateRepositoryUseCase.execute(Number(id), req.user.sub);
+    try {
+      return await this.updateRepositoryUseCase.execute(
+        Number(id),
+        req.user.sub,
+      );
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
   }
 
   @Version('1')
@@ -60,6 +72,13 @@ export class GithubRepositoryController {
     @Request() req: any,
     @Param('id') id: string,
   ): Promise<RepositoryDto> {
-    return await this.deleteRepositoryUseCase.execute(Number(id), req.user.sub);
+    try {
+      return await this.deleteRepositoryUseCase.execute(
+        Number(id),
+        req.user.sub,
+      );
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
   }
 }

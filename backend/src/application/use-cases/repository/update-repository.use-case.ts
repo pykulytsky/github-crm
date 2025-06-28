@@ -24,7 +24,9 @@ export class UpdateRepositoryUseCase {
     const fetchedRepository = await this.service.fetchRepository(
       existingRepository.owner,
       existingRepository.name,
-    ); // TODO: error handling
+    );
+
+    if (!fetchedRepository) throw new Error('Could not fetch repository');
 
     return await this.repo.update(
       existingRepository.id,

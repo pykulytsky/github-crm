@@ -18,12 +18,20 @@ export class AddRepositoryUseCase {
     repoOwner: string,
     repoName: string,
   ): Promise<Repository> {
+    const existingRepository = await this.repo.findUnique(
+      repoName,
+      repoOwner,
+      userId,
+    );
+
+    if (existingRepository) throw new Error('Repository already exists');
+
     const fetchedRepository = await this.service.fetchRepository(
       repoOwner,
       repoName,
     );
 
-    if (!fetchedRepository) throw new Error('Could not fetch repository'); // TODO: improve error handling
+    if (!fetchedRepository) throw new Error('Could not fetch repository');
 
     const newRepositoryInput = { ...fetchedRepository, userId };
     return await this.repo.create(newRepositoryInput);

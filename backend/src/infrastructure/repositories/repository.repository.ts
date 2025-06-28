@@ -29,6 +29,18 @@ export class PrismaRepositoryRepository implements IRepositoryRepository {
     return repository ? this.toDomainModel(repository) : null;
   }
 
+  async findUnique(
+    name: string,
+    owner: string,
+    userId: string,
+  ): Promise<Repository | null> {
+    const repository = await this.prisma.repository.findFirst({
+      where: { userId, name, owner },
+    });
+
+    return repository ? this.toDomainModel(repository) : null;
+  }
+
   async create(input: CreateRepositoryInput): Promise<Repository> {
     const repository = await this.prisma.repository.create({
       data: {

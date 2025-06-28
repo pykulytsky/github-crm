@@ -5,6 +5,7 @@ import { Repositories } from "./pages/Repositories";
 import { Signup } from "./pages/Signup";
 import { useEffect, useState } from "react";
 import { me } from "./api/auth";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
@@ -24,6 +25,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-white">
+      <Toaster />
       <BrowserRouter>
         <Routes>
           <Route

@@ -9,6 +9,7 @@ import {
 } from "../api/repository";
 import type { Repository } from "../api/types";
 import { logout } from "../api/auth";
+import { toast } from "react-hot-toast";
 
 export function Repositories({ onLogout }: { onLogout: () => void }) {
   const [repositories, setRepositories] = useState<Repository[]>([]);
@@ -28,6 +29,9 @@ export function Repositories({ onLogout }: { onLogout: () => void }) {
 
     if (res.ok) {
       onLogout();
+    } else {
+      const error = await res.json();
+      toast.error(error.message);
     }
   };
 
@@ -43,7 +47,7 @@ export function Repositories({ onLogout }: { onLogout: () => void }) {
     if (repository) {
       setRepositories((oldRepositories) => [repository, ...oldRepositories]);
     } else {
-      console.log("TODO: handle errors");
+      toast.error("Failed to add repository");
     }
 
     setIsModalOpen(false);
@@ -56,6 +60,8 @@ export function Repositories({ onLogout }: { onLogout: () => void }) {
       setRepositories((oldRepositories) =>
         oldRepositories.filter((repo) => repo.id !== deletedRepository.id),
       );
+    } else {
+      toast.error("Failed to delete repository");
     }
   };
 
@@ -72,6 +78,8 @@ export function Repositories({ onLogout }: { onLogout: () => void }) {
           }
         }),
       );
+    } else {
+      toast.error("Failed to update repository");
     }
   };
 
