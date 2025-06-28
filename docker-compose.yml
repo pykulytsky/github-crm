@@ -27,6 +27,10 @@ services:
         condition: service_healthy
     environment:
       DATABASE_URL: postgresql://admin:admin@postgres:5432/github-crm
+      PORT: 3000
+      GITHUB_API_BASE_URL: "https://api.github.com"
+      GITHUB_API_VERSION: "2022-11-28"
+      JWT_SECRET: your-secret
     ports:
       - "3000:3000"
     networks:

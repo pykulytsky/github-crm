@@ -38,6 +38,9 @@ export class AuthController {
       response.cookie('access_token', `Bearer ${access_token}`, {
         path: '/',
         maxAge: 1000 * 60 * 60,
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true,
       });
       return { access_token };
     } catch (e) {
@@ -60,6 +63,9 @@ export class AuthController {
       response.cookie('access_token', `Bearer ${access_token}`, {
         path: '/',
         maxAge: 1000 * 60 * 60,
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true,
       });
       return { access_token };
     } catch (e) {
