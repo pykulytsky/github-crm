@@ -1,18 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router";
+import { login } from "../api/auth";
 
 export function Login({ onSuccess }: { onSuccess: () => void }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const login = async () => {
-    const baseUrl = import.meta.env.VITE_BACKEND_URL;
-    const res = await fetch(`${baseUrl}/v1/auth/login`, {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+  const handleLogin = async () => {
+    const res = await login(email, password);
 
     if (res.ok) {
       onSuccess();
@@ -34,7 +29,7 @@ export function Login({ onSuccess }: { onSuccess: () => void }) {
         placeholder="password"
         type="password"
       />
-      <button onClick={login}>Login</button>
+      <button onClick={handleLogin}>Login</button>
       <Link to="/signup">Signup</Link>
     </div>
   );

@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 import { RepositoryList } from "../components/repositories/RepositoryList";
 import { AddRepositoryModal } from "../components/repositories/AddRepositoryModal";
-
-const baseUrl = import.meta.env.VITE_BACKEND_URL;
+import {
+  addRepository,
+  deleteRepository,
+  fetchUserRepositories,
+  updateRepository,
+} from "../api/repository";
+import type { Repository } from "../api/types";
+import { logout } from "../api/auth";
 
 export function Repositories({ onLogout }: { onLogout: () => void }) {
-  const [repositories, setRepositories] = useState<any[]>([]);
+  const [repositories, setRepositories] = useState<Repository[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -13,24 +19,12 @@ export function Repositories({ onLogout }: { onLogout: () => void }) {
   }, []);
 
   const fetchRepositories = async () => {
-    const res = await fetch(`${baseUrl}/v1/github-repositories`, {
-      method: "GET",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-    });
-
-    const data = await res.json();
+    const data = await fetchUserRepositories();
     setRepositories(data);
-
-    console.log(data);
   };
 
-  const logout = async () => {
-    const res = await fetch(`${baseUrl}/v1/auth/logout`, {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-    });
+  const handleLogout = async () => {
+    const res = await logout();
 
     if (res.ok) {
       onLogout();
@@ -44,31 +38,21 @@ export function Repositories({ onLogout }: { onLogout: () => void }) {
     owner: string;
     name: string;
   }) => {
-    console.log("Adding repository:", owner, name);
-    const res = await fetch(`${baseUrl}/v1/github-repositories`, {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ owner, name }),
-    });
+    const repository = await addRepository(owner, name);
 
-    if (res.ok) {
-      const newRepository = await res.json();
-      setRepositories((oldRepositories) => [newRepository, ...oldRepositories]);
+    if (repository) {
+      setRepositories((oldRepositories) => [repository, ...oldRepositories]);
+    } else {
+      console.log("TODO: handle errors");
     }
 
     setIsModalOpen(false);
   };
 
   const handleDeleteRepository = async (repoId: number) => {
-    const res = await fetch(`${baseUrl}/v1/github-repositories/${repoId}`, {
-      method: "DELETE",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-    });
+    const deletedRepository = await deleteRepository(repoId);
 
-    if (res.ok) {
-      const deletedRepository = await res.json();
+    if (deletedRepository) {
       setRepositories((oldRepositories) =>
         oldRepositories.filter((repo) => repo.id !== deletedRepository.id),
       );
@@ -76,14 +60,9 @@ export function Repositories({ onLogout }: { onLogout: () => void }) {
   };
 
   const handleUpdateRepository = async (repoId: number) => {
-    const res = await fetch(`${baseUrl}/v1/github-repositories/${repoId}`, {
-      method: "PATCH",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-    });
+    const updatedRepository = await updateRepository(repoId);
 
-    if (res.ok) {
-      const updatedRepository = await res.json();
+    if (updatedRepository) {
       setRepositories((oldRepositories) =>
         oldRepositories.map((repo) => {
           if (repo.id == updatedRepository.id) {
@@ -100,7 +79,7 @@ export function Repositories({ onLogout }: { onLogout: () => void }) {
     <>
       <button
         onClick={() => {
-          logout();
+          handleLogout();
         }}
       >
         Logout

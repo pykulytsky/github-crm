@@ -3,15 +3,13 @@ import { Login } from "./pages/Login";
 import { Repositories } from "./pages/Repositories";
 import { Signup } from "./pages/Signup";
 import { useEffect, useState } from "react";
+import { me } from "./api/auth";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const baseUrl = import.meta.env.VITE_BACKEND_URL;
-    fetch(`${baseUrl}/v1/auth/me`, {
-      credentials: "include",
-    })
+    me()
       .then((res) => setIsAuthenticated(res.ok))
       .catch(() => setIsAuthenticated(false));
   }, []);

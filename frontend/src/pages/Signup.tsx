@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-
-const baseUrl = import.meta.env.VITE_BACKEND_URL;
+import { signup } from "../api/auth";
 
 export function Signup({ onSuccess }: { onSuccess: () => void }) {
   const [email, setEmail] = useState("");
@@ -12,7 +11,7 @@ export function Signup({ onSuccess }: { onSuccess: () => void }) {
   const isFormValid =
     email && password && confirmPassword && password === confirmPassword;
 
-  const signup = async () => {
+  const handleSignup = async () => {
     if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
@@ -20,13 +19,7 @@ export function Signup({ onSuccess }: { onSuccess: () => void }) {
 
     setError("");
 
-    const res = await fetch(`${baseUrl}/v1/auth/signup`, {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-
+    const res = await signup(email, password);
     if (res.ok) {
       onSuccess();
     } else {
@@ -54,7 +47,7 @@ export function Signup({ onSuccess }: { onSuccess: () => void }) {
         type="password"
       />
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <button onClick={signup} disabled={!isFormValid}>
+      <button onClick={handleSignup} disabled={!isFormValid}>
         Signup
       </button>
       <Link to="/login">Login</Link>
