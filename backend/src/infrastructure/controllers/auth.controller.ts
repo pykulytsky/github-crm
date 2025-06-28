@@ -6,7 +6,9 @@ import {
   UnauthorizedException,
   Version,
   Request,
+  Res,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { LoginDto, SignupDto } from '../dtos/auth.dto';
 import { GetUserUseCase } from 'src/application/use-cases/user/get-user.use-case';
 import { LoginUseCase } from 'src/application/use-cases/auth/login.use-case';
@@ -24,9 +26,20 @@ export class AuthController {
   @Version('1')
   @Public()
   @Post('login')
-  async login(@Body() input: LoginDto) {
+  async login(
+    @Res({ passthrough: true }) response: Response,
+    @Body() input: LoginDto,
+  ) {
     try {
-      return await this.loginUseCase.execute(input.email, input.password);
+      const { access_token } = await this.loginUseCase.execute(
+        input.email,
+        input.password,
+      );
+      response.cookie('access_token', `Bearer ${access_token}`, {
+        path: '/',
+        maxAge: 1000 * 60 * 60,
+      });
+      return { access_token };
     } catch (e) {
       throw new UnauthorizedException(e.message);
     }
@@ -35,9 +48,20 @@ export class AuthController {
   @Version('1')
   @Public()
   @Post('signup')
-  async signup(@Body() input: SignupDto) {
+  async signup(
+    @Res({ passthrough: true }) response: Response,
+    @Body() input: SignupDto,
+  ) {
     try {
-      return await this.signupUseCase.execute(input.email, input.password);
+      const { access_token } = await this.loginUseCase.execute(
+        input.email,
+        input.password,
+      );
+      response.cookie('access_token', `Bearer ${access_token}`, {
+        path: '/',
+        maxAge: 1000 * 60 * 60,
+      });
+      return { access_token };
     } catch (e) {
       throw new UnauthorizedException(e.message);
     }
