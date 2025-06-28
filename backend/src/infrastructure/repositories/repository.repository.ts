@@ -15,6 +15,7 @@ export class PrismaRepositoryRepository implements IRepositoryRepository {
   async findByUserId(userId: string): Promise<Array<Repository>> {
     const repositories = await this.prisma.repository.findMany({
       where: { userId },
+      orderBy: { addedAt: 'desc' },
     });
 
     return repositories.map((repository) => this.toDomainModel(repository));

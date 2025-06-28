@@ -2,9 +2,15 @@ import { RepositoryCard } from "./RepositoryCard";
 
 export type RepositoryListProps = {
   repositories: any[];
+  onRepositoryUpdate(id: number): void;
+  onRepositoryDelete(id: number): void;
 };
 
-export function RepositoryList({ repositories }: RepositoryListProps) {
+export function RepositoryList({
+  repositories,
+  onRepositoryUpdate,
+  onRepositoryDelete,
+}: RepositoryListProps) {
   return (
     <>
       {repositories.map((repository: any) => (
@@ -12,10 +18,10 @@ export function RepositoryList({ repositories }: RepositoryListProps) {
           key={repository.id}
           repository={repository}
           onUpdate={() => {
-            console.log("TODO update");
+            onRepositoryUpdate(repository.id);
           }}
           onDelete={() => {
-            console.log("TODO delete");
+            onRepositoryDelete(repository.id);
           }}
         />
       ))}

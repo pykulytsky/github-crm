@@ -1,7 +1,7 @@
 export type RepositoryCardProps = {
   repository: any;
-  onUpdate(id: number): void;
-  onDelete(id: number): void;
+  onUpdate(): void;
+  onDelete(): void;
 };
 
 export function RepositoryCard({
@@ -9,5 +9,11 @@ export function RepositoryCard({
   onUpdate,
   onDelete,
 }: RepositoryCardProps) {
-  return <div>{JSON.stringify(repository)}</div>;
+  return (
+    <div>
+      <p>{JSON.stringify(repository)}</p>
+      <button onClick={onUpdate}>update</button>
+      <button onClick={onDelete}>delete</button>
+    </div>
+  );
 }
