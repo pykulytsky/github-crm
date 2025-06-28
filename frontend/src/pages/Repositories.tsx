@@ -8,12 +8,13 @@ import {
   updateRepository,
 } from "../api/repository";
 import type { Repository } from "../api/types";
-import { logout } from "../api/auth";
+import { useAuth } from "../context/AuthContext";
 import { toast } from "react-hot-toast";
 
-export function Repositories({ onLogout }: { onLogout: () => void }) {
+export function Repositories() {
   const [repositories, setRepositories] = useState<Repository[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { logout: authLogout } = useAuth();
 
   useEffect(() => {
     fetchRepositories();
@@ -25,14 +26,7 @@ export function Repositories({ onLogout }: { onLogout: () => void }) {
   };
 
   const handleLogout = async () => {
-    const res = await logout();
-
-    if (res.ok) {
-      onLogout();
-    } else {
-      const error = await res.json();
-      toast.error(error.message);
-    }
+    await authLogout();
   };
 
   const handleAddRepository = async ({

@@ -1,17 +1,20 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { login } from "../api/auth";
+import { useAuth } from "../context/AuthContext";
 import { toast } from "react-hot-toast";
 
-export function Login({ onSuccess }: { onSuccess: () => void }) {
+export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { login: authLogin } = useAuth();
 
   const handleLogin = async () => {
     const res = await login(email, password);
 
     if (res.ok) {
-      onSuccess();
+      const userData = await res.json();
+      authLogin(userData);
     } else {
       const error = await res.json();
       toast.error(error.message);

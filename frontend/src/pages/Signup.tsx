@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { signup } from "../api/auth";
+import { useAuth } from "../context/AuthContext";
 import { toast } from "react-hot-toast";
 
-export function Signup({ onSuccess }: { onSuccess: () => void }) {
+export function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const { login: authLogin } = useAuth();
 
   const isFormValid =
     email && password && confirmPassword && password === confirmPassword;
@@ -22,7 +24,8 @@ export function Signup({ onSuccess }: { onSuccess: () => void }) {
 
     const res = await signup(email, password);
     if (res.ok) {
-      onSuccess();
+      const userData = await res.json();
+      authLogin(userData);
     } else {
       const error = await res.json();
       toast.error(error.message);
