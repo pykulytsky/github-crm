@@ -8,10 +8,16 @@ function parseRepositoryInput(
   const shortMatch = trimmed.match(/^([\w.-]+)\/([\w.-]+)$/);
   if (shortMatch) return { owner: shortMatch[1], name: shortMatch[2] };
 
-  const urlMatch = trimmed.match(
+  const httpsMatch = trimmed.match(
     /^https:\/\/github\.com\/([\w.-]+)\/([\w.-]+)(\/)?$/,
   );
-  if (urlMatch) return { owner: urlMatch[1], name: urlMatch[2] };
+  if (httpsMatch) return { owner: httpsMatch[1], name: httpsMatch[2] };
+
+  const bareDomainMatch = trimmed.match(
+    /^github\.com\/([\w.-]+)\/([\w.-]+)(\/)?$/,
+  );
+  if (bareDomainMatch)
+    return { owner: bareDomainMatch[1], name: bareDomainMatch[2] };
 
   return null;
 }
